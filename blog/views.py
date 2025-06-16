@@ -1,9 +1,29 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from .form import UserRegisterForm
+
+
+def register(request):
+    if request.method == "POST":
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get("username")
+            messages.success(request, f"Account was created for {username}!")
+            return redirect("login")
+    else:
+        form = UserRegisterForm()
+    return render(request, "blog/register.html", {"form": form, "title": "Register"})
+
+
+@login_required
+def profile(request):
+    return render(request, "blog/Profile.html", {"title": "Profile"})
 
 
 # Create your views here.

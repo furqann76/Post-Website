@@ -1,9 +1,19 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from django.contrib import admin
+from blog import views as blog_views
+from django.shortcuts import redirect
+
+
+def redirect_to_login(request):
+    return redirect("login")
 
 
 urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("register/", blog_views.register, name="register"),  # type: ignore
+    path("profile/", blog_views.profile, name="profile"),  # type: ignore
     path(
         "login/",
         auth_views.LoginView.as_view(template_name="blog/login.html"),
