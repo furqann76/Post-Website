@@ -1,0 +1,18 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<div class="content-section">
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <hr>
+    <small>{{ post.created_at }}</small>
+    <div class="btn-group">
+        <a href="{% url 'post-update' post.pk %}">Edit</a>
+        <a href="{% url 'post-delete' post.pk %}">Delete</a>
+        <a href="{% url 'home' %}">Return Home</a>
+    </div>
+</div>
+
+
+
+{% endblock %}
