@@ -1,40 +1,106 @@
-
 {% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
 <style>
-        body {
-            background: #f0f0f0;
-        }
-        .login-container {
-            max-width: 400px;
-            margin: 60px auto;
-            padding: 2rem 2.5rem;
-            background: #000000;
-            border-radius: 1rem;
-            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
-        }
-        .login-title {
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #0d6efd;
-        }
-    </style>
+    body {
+        background-color: #002c5c;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .signup-box {
+        background-color: #000000;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .signup-title {
+        text-align: center;
+        color: #1e90ff;
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        font-weight: bold;
+    }
+
+    .form-label {
+        color: #ffffff;
+        margin-bottom: 0.3rem;
+        display: block;
+    }
+
+    .form-control {
+        background-color: #f0f8ff;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+
+    .btn-submit {
+        background-color: #1e90ff;
+        color: white;
+        border: none;
+        padding: 0.5rem;
+        width: 100%;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .login-link {
+        margin-top: 1rem;
+        text-align: center;
+        color: #aaaaaa;
+    }
+
+    .login-link a {
+        color: #1e90ff;
+        text-decoration: none;
+    }
+</style>
+
 {% block content %}
-<div class="content-section">
-    <form method="post" >
+<div class="signup-box">
+    <h2 class="signup-title">Sign Up</h2>
+    <form method="post">
         {% csrf_token %}
-        <fieldset class="login-container>
-            <legend class="border-bottom mb-4">Register</legend>
-            {{ form|crispy }}
-        </fieldset>
-        <div class="form-group">
-             <button type="submit" class="btn btn-primary">Sign Up</button>
+
+        <!-- Username -->
+        <div>
+            <label class="form-label">Username</label>
+            {{ form.username|add_class:"form-control" }}
         </div>
+
+        <!-- Email -->
+        <div>
+            <label class="form-label">Email</label>
+            {{ form.email|add_class:"form-control" }}
+        </div>
+
+        <!-- Password -->
+        <div>
+            <label class="form-label">Password</label>
+            {{ form.password1|add_class:"form-control" }}
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+            <label class="form-label">Confirm Password</label>
+            {{ form.password2|add_class:"form-control" }}
+        </div>
+
+        <button type="submit" class="btn-submit">Register</button>
     </form>
-    <div>
-        <small>Already have an account? <a href="{% url 'login' %}"><small class="btn-primary">Sign in</small></a></small>
+
+    <div class="login-link">
+        <small>Already have an account? <a href="{% url 'login' %}">Sign In</a></small>
     </div>
 </div>
-
-
-
 {% endblock %}
