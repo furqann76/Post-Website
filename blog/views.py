@@ -2,9 +2,11 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+@login_required
 def home(request):
     posts = Post.objects.all()
     return render(request, "blog/home.html", {"posts": posts})
