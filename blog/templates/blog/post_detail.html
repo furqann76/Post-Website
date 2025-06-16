@@ -3,13 +3,13 @@
 {% block content %}
 <div class="content-section">
     <h1>{{ post.title }}</h1>
-    <p>{{ post.content }}</p>
+    <p class="text-white">{{ post.content }}</p>
     <hr>
-    <small>{{ post.created_at }}</small>
+    <small class="text-white">{{ post.created_at }}</small>
     <div class="btn-group">
-        <a href="{% url 'post-update' post.pk %}">Edit</a>
-        <a href="{% url 'post-delete' post.pk %}">Delete</a>
-        <a href="{% url 'home' %}">Return Home</a>
+        <a href="{% url 'post-update' post.pk %}" class="btn btn-sm btn-outline-secondary" style="margin-left: 1px;">Edit</a>
+        <a href="{% url 'post-delete' post.pk %}" class="btn btn-sm btn-outline-danger" style="margin-left: 1px;">Delete</a>
+        <a href="{% url 'home' %}" class="btn btn-sm btn-outline-primary" style="margin-left: 1px;">Return Home</a>
     </div>
 </div>
 
