@@ -54,8 +54,8 @@ nerdy\_posts/
 
 ### 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/nerdy-posts.git
-cd nerdy-posts
+git clone https://github.com/furqann76/Post-Website.git
+cd Post-Website
 ````
 
 ### 2. Create and activate a virtual environment:
