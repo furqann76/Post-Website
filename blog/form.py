@@ -2,8 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from blog.models import Profile
-from blog.signals import post_save
-from django.dispatch import receiver
 
 
 class UserRegisterForm(UserCreationForm):
@@ -38,3 +36,15 @@ class UserRegisterForm(UserCreationForm):
             profile.save()
 
         return user
+
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["username", "email"]
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["phone_number", "address"]

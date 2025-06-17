@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from .form import UserRegisterForm
 from django.contrib.auth import login
+from .form import EditUserForm, EditProfileForm
 
 
 def register(request):
@@ -21,6 +22,31 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, "blog/register.html", {"form": form, "title": "Register"})
+
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    profile = user.profile
+
+    if request.method == "POST":
+        user_form = EditUserForm(request.POST, instance=user)
+        profile_form = EditProfileForm(request.POST, instance=profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, "Profile updated successfully.")
+            return redirect("profile")  # change 'profile' to your profile view name
+    else:
+        user_form = EditUserForm(instance=user)
+        profile_form = EditProfileForm(instance=profile)
+
+    return render(
+        request,
+        "blog/edit_profile.html",
+        {"user_form": user_form, "profile_form": profile_form},
+    )
 
 
 @login_required

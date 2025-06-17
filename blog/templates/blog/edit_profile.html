@@ -1,0 +1,70 @@
+{% load widget_tweaks %}
+
+<style>
+    body {
+        background-color: #002c5c;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .edit-box {
+        background-color: #000000;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+        color: white;
+    }
+
+    .form-label {
+        margin-top: 1rem;
+        display: block;
+    }
+
+    .form-control {
+        background-color: #f0f8ff;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem;
+        width: 100%;
+    }
+
+    .btn-update {
+        background-color: #1e90ff;
+        color: white;
+        padding: 0.5rem;
+        width: 100%;
+        border: none;
+        margin-top: 1.5rem;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="edit-box">
+    <h2>Edit Profile</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- User fields -->
+        <label class="form-label">Username</label>
+        {{ user_form.username|add_class:"form-control" }}
+
+        <label class="form-label">Email</label>
+        {{ user_form.email|add_class:"form-control" }}
+
+        <!-- Profile fields -->
+        <label class="form-label">Phone Number</label>
+        {{ profile_form.phone_number|add_class:"form-control" }}
+
+        <label class="form-label">Address</label>
+        {{ profile_form.address|add_class:"form-control" }}
+
+        <button type="submit" class="btn-update">Update</button>
+    </form>
+</div>

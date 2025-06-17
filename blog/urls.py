@@ -16,6 +16,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("register/", blog_views.register, name="register"),  # type: ignore
     path("profile/", blog_views.profile, name="profile"),  # type: ignore
+    path("edit_profile/", views.edit_profile, name="edit_profile"),
     path(
         "login/",
         auth_views.LoginView.as_view(template_name="blog/login.html"),
