@@ -32,9 +32,9 @@ class UserRegisterForm(UserCreationForm):
             user.save()  # This triggers the signal to create a profile
             profile = user.profile
             # Now just update the existing profile
-            """profile = Profile.objects.get(user=user)"""
             profile.phone_number = self.cleaned_data["phone_number"]
             profile.profile_pic = self.cleaned_data["profile_pic"]
+            profile.address = self.cleaned_data["address"]
             profile.save()
 
         return user
