@@ -1,37 +1,31 @@
 {% extends "blog/base.html" %}
 
-
-
 {% block content %}
 <div class="row mb-4">
     <div class="col">
         <h1 class="display-8 nerdnook">The Nerd Nook</h1>
     </div>
-    <div class="col text-end">
-        <a href="{% url 'profile' %}" class="btn btn-primary">Profile</a>
-        <a href="{% url 'post-create' %}" class="btn btn-primary">Create New Post</a>
-
-    </div>
 </div>
+
 <div class="row">
     {% for post in posts %}
-    <div class="col-md-6  mb-4">
+    <div class="col-md-6 mb-4">
         <div class="content-section">
             <h2>
                 <a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a>
             </h2>
-            <p class="text-white">{{ post.content}}</p>
+            <p class="text-white">{{ post.content }}</p>
             <div>
-                <small class="d-flex justify-content-between align-items-center text-white">{{post.created_at}}</small>
+                <small class="d-flex justify-content-between align-items-center text-white">{{ post.created_at }}</small>
+                {% if user.is_authenticated %}
                 <div class="btn-group">
                     <a href="{% url 'post-update' post.pk %}" class="btn btn-sm btn-outline-secondary me-2">Edit</a>
                     <a href="{% url 'post-delete' post.pk %}" class="btn btn-sm btn-outline-danger me-1">Delete</a>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
     {% endfor %}
 </div>
-
 {% endblock %}
-

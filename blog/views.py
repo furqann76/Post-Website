@@ -59,17 +59,15 @@ def profile(request):
 
 
 # Create your views here.
-@login_required
 def home(request):
     posts = Post.objects.all()
     return render(request, "blog/home.html", {"posts": posts})
 
 
 # View Details
-@login_required
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    comments = post.comments.all().order_by("-created_at")
+    comments = post.comments.all().order_by("-created_at")  # type: ignore
 
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
