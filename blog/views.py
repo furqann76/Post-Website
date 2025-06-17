@@ -7,21 +7,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from .form import UserRegisterForm
 from django.contrib.auth import login
-from .models import Profile
 
 
 def register(request):
     if request.method == "POST":
-        form = UserRegisterForm(request.POST)
+        form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            user = form.save()  # This now properly handles profile creation
             username = form.cleaned_data.get("username")
-            messages.success(request, f"Account was created for {username}!")
-            profile_pic = form.cleaned_data.get("profile_pic")
-            if profile_pic:
-                Profile.objects.filter(user=form.save()).update(profile_pic=profile_pic)
-            login(request, form.save())
-            return redirect("login")
+            messages.success(request, f"Account created for {username}!")
+            login(request, user)
+            return redirect("home")  # Changed from 'login' to 'home' for better UX
     else:
         form = UserRegisterForm()
     return render(request, "blog/register.html", {"form": form, "title": "Register"})
