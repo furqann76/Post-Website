@@ -40,7 +40,7 @@
         border: none;
         border-radius: 5px;
         padding: 0.5rem;
-        margin-bottom: 1rem;
+        margin-bottom: 0.2rem;
         width: 100%;
     }
 
@@ -64,53 +64,121 @@
         color: #1e90ff;
         text-decoration: none;
     }
+
+    .errorlist {
+        color: #ff4d4d;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        list-style: none;
+        padding-left: 0;
+    }
 </style>
 
 {% block content %}
 <div class="signup-box">
     <h2 class="signup-title">Sign Up</h2>
+
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+
+        <!-- Non-field errors -->
+        {% if form.non_field_errors %}
+            <ul class="errorlist">
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
         <!-- Username -->
         <div>
             <label class="form-label">Username</label>
             {{ form.username|add_class:"form-control" }}
+            {% if form.username.errors %}
+                <ul class="errorlist">
+                    {% for error in form.username.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
 
         <!-- Email -->
         <div>
             <label class="form-label">Email</label>
             {{ form.email|add_class:"form-control" }}
+            {% if form.email.errors %}
+                <ul class="errorlist">
+                    {% for error in form.email.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
 
         <!-- Phone Number -->
         <div>
             <label class="form-label">Phone Number</label>
             {{ form.phone_number|add_class:"form-control" }}
+            {% if form.phone_number.errors %}
+                <ul class="errorlist">
+                    {% for error in form.phone_number.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
 
+        <!-- Address -->
         <div>
             <label class="form-label">Address</label>
             {{ form.address|add_class:"form-control" }}
+            {% if form.address.errors %}
+                <ul class="errorlist">
+                    {% for error in form.address.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
 
         <!-- Password -->
         <div>
             <label class="form-label">Password</label>
             {{ form.password1|add_class:"form-control" }}
+            {% if form.password1.errors %}
+                <ul class="errorlist">
+                    {% for error in form.password1.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
 
         <!-- Confirm Password -->
         <div>
             <label class="form-label">Confirm Password</label>
             {{ form.password2|add_class:"form-control" }}
+            {% if form.password2.errors %}
+                <ul class="errorlist">
+                    {% for error in form.password2.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
 
         <!-- Profile Picture -->
         <div>
             <label class="form-label">Upload Your Picture</label>
             {{ form.profile_pic|add_class:"form-control" }}
+            {% if form.profile_pic.errors %}
+                <ul class="errorlist">
+                    {% for error in form.profile_pic.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
 
         <button type="submit" class="btn-submit">Register</button>
