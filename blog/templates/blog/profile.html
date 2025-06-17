@@ -58,6 +58,7 @@
         <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
         <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
         <li class="list-group-item"><strong>Phone Number:</strong> {{ user.profile.phone_number }}</li>
+        <li class="list-group-item"><strong>Address:</strong> {{ user.profile.address }}</li>
     </ul>
     <div class="text-center mt-3">
         <a href="{% url 'home' %}" class="btn btn-link">Back to Home</a>
