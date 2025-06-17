@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
+from .models import Post, Comment
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -8,6 +8,8 @@ from django.contrib import messages
 from .form import UserRegisterForm
 from django.contrib.auth import login
 from .form import EditUserForm, EditProfileForm
+from .form import CommentForm
+from django.http import HttpResponseForbidden
 
 
 def register(request):
@@ -30,8 +32,10 @@ def edit_profile(request):
     profile = user.profile
 
     if request.method == "POST":
-        user_form = EditUserForm(request.POST, instance=user)
-        profile_form = EditProfileForm(request.POST, instance=profile)
+        user_form = EditUserForm(request.POST, instance=request.user)
+        profile_form = EditProfileForm(
+            request.POST, request.FILES, instance=request.user.profile
+        )
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
@@ -65,7 +69,28 @@ def home(request):
 @login_required
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, "blog/post_detail.html", {"post": post})
+    comments = post.comments.all().order_by("-created_at")
+
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.user = request.user
+            new_comment.post = post
+            new_comment.save()
+            return redirect("post_detail", pk=post.pk)
+    else:
+        comment_form = CommentForm()
+
+    return render(
+        request,
+        "blog/post_detail.html",
+        {
+            "post": post,
+            "comments": comments,
+            "comment_form": comment_form,
+        },
+    )
 
 
 # Create Post
@@ -89,3 +114,15 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = "blog/post_delete.html"
     success_url = reverse_lazy("home")
+
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if comment.user != request.user:
+        return HttpResponseForbidden("You are not allowed to delete this comment.")
+
+    post_pk = comment.post.pk
+    comment.delete()
+    return redirect("post_detail", pk=post_pk)

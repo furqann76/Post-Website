@@ -48,7 +48,7 @@
 
 <div class="edit-box">
     <h2>Edit Profile</h2>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <!-- User fields -->
@@ -64,6 +64,9 @@
 
         <label class="form-label">Address</label>
         {{ profile_form.address|add_class:"form-control" }}
+
+        <label class="form-label">Profile Picture</label>
+        {{ profile_form.profile_pic|add_class:"form-control" }}
 
         <button type="submit" class="btn-update">Update</button>
     </form>
