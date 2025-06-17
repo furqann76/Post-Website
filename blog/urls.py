@@ -4,6 +4,8 @@ from . import views
 from django.contrib import admin
 from blog import views as blog_views
 from django.shortcuts import redirect
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 def redirect_to_login(request):
@@ -26,3 +28,6 @@ urlpatterns = [
     path("post/<int:pk>/delete/", views.PostDeleteView.as_view(), name="post-delete"),
     path("logout/", auth_views.LogoutView.as_view(next_page="login"), name="logout"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

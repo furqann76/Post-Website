@@ -6,6 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from .form import UserRegisterForm
+from django.contrib.auth import login
+from django.contrib.auth.models import User
+from .form import UserRegisterForm
+from .models import Profile
 
 
 def register(request):
@@ -15,6 +19,10 @@ def register(request):
             form.save()
             username = form.cleaned_data.get("username")
             messages.success(request, f"Account was created for {username}!")
+            profile_pic = form.cleaned_data.get("profile_pic")
+            if profile_pic:
+                Profile.objects.filter(user=form.save()).update(profile_pic=profile_pic)
+            login(request, form.save())
             return redirect("login")
     else:
         form = UserRegisterForm()
@@ -23,7 +31,7 @@ def register(request):
 
 @login_required
 def profile(request):
-    return render(request, "blog/Profile.html", {"title": "Profile"})
+    return render(request, "blog/profile.html", {"title": "Profile"})
 
 
 # Create your views here.

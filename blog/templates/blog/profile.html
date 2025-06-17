@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #002f61;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+        .profile-box {
+            background-color: black;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 400px;
+        }
+        .profile-box h2 {
+            color: #1e90ff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .list-group-item {
+            background-color: #f8f9fa;
+            color: black;
+            border: none;
+        }
+        .btn-link {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+        .rounded-circle {
+            object-fit: cover;
+            border: 3px solid #1e90ff;
+        }
+    </style>
+</head>
+<body>
+<div class="profile-box">
+    <div class="text-center mb-4">
+        {% if user.profile.profile_pic %}
+            <img src="{{ user.profile.profile_pic.url }}" alt="Profile Picture" class="rounded-circle" width="120" height="120">
+        {% else %}
+            <img src="https://ui-avatars.com/api/?name={{ user.username }}" alt="Profile Picture" class="rounded-circle" width="120" height="120">
+        {% endif %}
+    </div>
+    <h2>Your Profile</h2>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
+        <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+    </ul>
+    <div class="text-center mt-3">
+        <a href="{% url 'home' %}" class="btn btn-link">Back to Home</a>
+    </div>
+</div>
+</body>
+</html>

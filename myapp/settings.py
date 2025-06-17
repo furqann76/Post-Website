@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     "crispy_bootstrap4",
     "widget_tweaks",
 ]
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 

@@ -69,7 +69,7 @@
 {% block content %}
 <div class="signup-box">
     <h2 class="signup-title">Sign Up</h2>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <!-- Username -->
@@ -94,6 +94,12 @@
         <div>
             <label class="form-label">Confirm Password</label>
             {{ form.password2|add_class:"form-control" }}
+        </div>
+
+        <!-- Profile Picture -->
+        <div>
+            <label class="form-label">Upload Your Picture</label>
+            {{ form.profile_pic|add_class:"form-control" }}
         </div>
 
         <button type="submit" class="btn-submit">Register</button>
