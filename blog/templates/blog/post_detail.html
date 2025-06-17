@@ -22,7 +22,9 @@
         <form method="post">
             {% csrf_token %}
             {{ comment_form.body }}
+            <div>
             <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
+            </div>
         </form>
     {% else %}
         <p style="color:white;">Please <a href="{% url 'login' %}">log in</a> to comment.</p>
