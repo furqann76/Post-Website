@@ -1,97 +1,94 @@
-```markdown
+---
+
 # 🧠 Nerdy Posts - A Django Blog App
 
-**Nerdy Posts** is a simple CRUD (Create, Read, Update, Delete) web application built with **Django**, using **HTML**, **Bootstrap**, and **Jinja2-style templates**.  
-Users can create, update, and delete blog posts in a clean and user-friendly interface.
+**Nerdy Posts** is a full-featured CRUD (Create, Read, Update, Delete) blog application built with **Django**, using **HTML**, **Bootstrap**, and **Jinja2-style templates**.
+Users can create, update, and delete blog posts, manage their profiles, and access a secure REST API—all in a clean and responsive interface.
 
 ---
 
 ## 🚀 Features
 
-- 📝 Add a new blog post  
-- ✏️ Edit an existing post  
-- ❌ Delete a post  
-- 📋 View all posts  
-- ⚡ Powered by Django’s ORM and views  
-- 💅 Responsive frontend using Bootstrap  
+* 📝 Add a new blog post
+* ✏️ Edit an existing post
+* ❌ Delete a post
+* 📋 View all posts on the homepage
+* 🔐 User authentication (signup, login, logout)
+* 👤 User profile with profile picture support
+* 🔄 Update user information and avatar
+* 🔑 Secure REST API endpoint for posts with API key authentication
+* ⚡ API throttling to limit excessive requests
+* 🔁 Conditional navigation based on user login status
+* 💅 Responsive frontend using Bootstrap
+* 🌐 Optional CORS support for cross-origin API access
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Backend:** Django (Python)  
-- **Frontend:** HTML, Bootstrap  
-- **Templating Engine:** Jinja2-style Django templates  
-- **Database:** SQLite (default)
+* **Backend:** Django (Python)
+* **Frontend:** HTML, Bootstrap
+* **Templating Engine:** Jinja2-style Django templates
+* **Database:** SQLite (default)
+* **API:** Django REST Framework with API key security and rate limiting
 
 ---
 
-## 📁 Project Structure
+## 📁 Project Structure Highlights
 
-```
-
-nerdy\_posts/
-├── manage.py
-├── db.sqlite3
-├── nerdy\_posts/            # Project settings
-│   └── settings.py
-├── posts/                  # Main app (add, edit, delete logic)
-│   ├── views.py
-│   ├── models.py
-│   ├── urls.py
-│   └── templates/
-│       └── posts/
-│           ├── index.html
-│           ├── create.html
-│           └── update.html
-└── static/                 # Bootstrap/CSS files
-
-````
+* `blog/forms.py` — Custom forms for user registration and profile editing
+* `blog/models.py` — Models for Post, Profile, and Comment
+* `blog/views.py` — Views for authentication, profile, posts, and API
+* `blog/serializers.py` — Serializer for Post model (API)
+* `blog/permissions.py` — Custom API key permission class
+* `blog/throttles.py` — Custom throttle class for API key rate limiting
+* `blog/templates/blog/` — HTML templates for login, signup, home, profile, etc.
+* `blog/urls.py` — URL patterns for all views and API endpoints
 
 ---
 
-## ⚙️ Installation
+## 🔐 API Usage
 
-### 1. Clone the repository:
+### 📦 API Endpoint
+
+`/api/posts/` — Returns all posts in JSON format.
+Secured using a custom API key passed in the `X-API-KEY` header.
+
+**Example:**
+
 ```bash
-git clone https://github.com/furqann76/Post-Website.git
-cd Post-Website
-````
-
-### 2. Create and activate a virtual environment:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+curl -H "X-API-KEY: your-secret-api-key" http://localhost:8000/api/posts/
 ```
 
-### 3. Install required packages:
+### ⏱ API Throttling
 
-```bash
-pip install -r requirements.txt
-```
-
-> Or install Django manually:
-
-```bash
-pip install django
-```
-
-### 4. Run database migrations:
-
-```bash
-python3 manage.py migrate
-```
+To prevent abuse, API access is rate-limited (e.g., 5 requests per minute per API key).
 
 ---
 
-## 🚀 Run the Server
+## 🧪 How to Use
 
-To start the development server, use the following command:
+1. Register a new user via the signup page.
+2. Log in to access your profile and create posts.
+3. Edit or delete your posts from the profile or home page.
+4. Access the REST API using a valid API key.
+5. Use the API to display posts on other websites.
 
-```bash
-python3 manage.py runserver
-```
+---
 
-Then open your browser and go to:
-📍 [http://127.0.0.1:8000](http://127.0.0.1:8000)
+## 👨‍💻 Conditional Navigation
+
+* If the user is **not authenticated**: Show **Login** and **Signup** buttons.
+* If the user is **authenticated**: Show **Profile**, **Create Post**, and **Logout** options.
+
+---
+
+## 📍 Profile Page
+
+Accessible at `/profile/`, this page displays:
+
+* Username and email
+* Profile picture or default avatar
+* All posts created by the logged-in user
+
+---
