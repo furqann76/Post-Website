@@ -15,12 +15,14 @@ from django.core.paginator import Paginator
 from rest_framework import generics
 from .serializers import PostSerializer
 from .permissions import HasAPIKey
+from blog.throttles import APIKeyRateThrottle
 
 
 class PostListAPIView(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [HasAPIKey]
+    throttle_classes = [APIKeyRateThrottle]
 
 
 def search_posts(request):
