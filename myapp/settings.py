@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+API_KEY = "f1f2f3f4r5"
 
 # Application definition
 

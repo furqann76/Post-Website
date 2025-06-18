@@ -14,11 +14,13 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from rest_framework import generics
 from .serializers import PostSerializer
+from .permissions import HasAPIKey
 
 
 class PostListAPIView(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = [HasAPIKey]
 
 
 def search_posts(request):
