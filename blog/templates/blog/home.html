@@ -6,7 +6,14 @@
         <h1 class="display-8 nerdnook">The Nerd Nook</h1>
     </div>
 </div>
-
+<div class="row">
+  <nav class="navbar navbar-expand-lg mb-4"></nav>
+   <form class="d-flex" role="search" method="get" action="{% url 'search' %}">
+      <input class="form-control me-2" type="search" name="q" placeholder="Search posts..." aria-label="Search">
+      <button class="btn btn-outline-light" type="submit">Search</button>
+    </form>
+</div>
+<nav class="navbar navbar-expand-lg mb-4"></nav>
 <div class="row">
     {% for post in posts %}
     <div class="col-md-6 mb-4">

@@ -6,6 +6,7 @@ from blog import views as blog_views
 from django.shortcuts import redirect
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import PostListAPIView
 
 
 def redirect_to_login(request):
@@ -14,6 +15,7 @@ def redirect_to_login(request):
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/posts/", PostListAPIView.as_view(), name="api-post-list"),
     path("register/", blog_views.register, name="register"),  # type: ignore
     path("profile/", blog_views.profile, name="profile"),  # type: ignore
     path("edit_profile/", views.edit_profile, name="edit_profile"),

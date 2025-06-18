@@ -12,6 +12,13 @@ from .form import CommentForm
 from django.http import HttpResponseForbidden
 from django.db.models import Q
 from django.core.paginator import Paginator
+from rest_framework import generics
+from .serializers import PostSerializer
+
+
+class PostListAPIView(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
 
 def search_posts(request):
