@@ -18,6 +18,7 @@ urlpatterns = [
     path("profile/", blog_views.profile, name="profile"),  # type: ignore
     path("edit_profile/", views.edit_profile, name="edit_profile"),
     path("post/<int:pk>/", views.post_detail, name="post_detail"),
+    path("my_posts/", views.my_posts, name="my_posts"),
     path(
         "comment/<int:comment_id>/delete/", views.delete_comment, name="delete_comment"
     ),

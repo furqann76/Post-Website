@@ -98,6 +98,10 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     fields = ["title", "content"]
     success_url = reverse_lazy("home")
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user  # 👈 Set the user here!
+        return super().form_valid(form)
+
 
 # Update Post
 class PostUpdateView(LoginRequiredMixin, UpdateView):
@@ -124,3 +128,9 @@ def delete_comment(request, comment_id):
     post_pk = comment.post.pk
     comment.delete()
     return redirect("post_detail", pk=post_pk)
+
+
+@login_required
+def my_posts(request):
+    posts = Post.objects.filter(user=request.user).order_by("-created_at")
+    return render(request, "blog/my_posts.html", {"posts": posts})
