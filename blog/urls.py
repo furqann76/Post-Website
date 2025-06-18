@@ -17,6 +17,7 @@ urlpatterns = [
     path("register/", blog_views.register, name="register"),  # type: ignore
     path("profile/", blog_views.profile, name="profile"),  # type: ignore
     path("edit_profile/", views.edit_profile, name="edit_profile"),
+    path("search/", views.search_posts, name="search"),
     path("post/<int:pk>/", views.post_detail, name="post_detail"),
     path("my_posts/", views.my_posts, name="my_posts"),
     path(

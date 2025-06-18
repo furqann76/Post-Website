@@ -1,0 +1,25 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<div class="content-section">
+    <h2 class="text-white">Search Results for "{{ query }}"</h2>
+    <hr>
+    {% if results %}
+        {% for post in results %}
+            <div class="card text-white mb-4 shadow rounded-4" style="background-color: #000;">
+                <div class="card-body">
+                    <h3>
+                        <a href="{% url 'post_detail' post.pk %}" class="text-primary text-decoration-none">
+                            {{ post.title }}
+                        </a>
+                    </h3>
+                    <p>{{ post.content|truncatewords:25 }}</p>
+                    <p class="small text-white">By {{ post.user.username }} | {{ post.created_at|date:"F j, Y" }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-light">No results found.</p>
+    {% endif %}
+</div>
+{% endblock %}

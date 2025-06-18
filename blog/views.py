@@ -10,6 +10,16 @@ from django.contrib.auth import login
 from .form import EditUserForm, EditProfileForm
 from .form import CommentForm
 from django.http import HttpResponseForbidden
+from django.db.models import Q
+from django.core.paginator import Paginator
+
+
+def search_posts(request):
+    query = request.GET.get("q")
+    results = Post.objects.filter(Q(title__icontains=query)) if query else []
+    return render(
+        request, "blog/search_results.html", {"results": results, "query": query}
+    )
 
 
 def register(request):
@@ -60,7 +70,11 @@ def profile(request):
 
 # Create your views here.
 def home(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by("-created_at")
+    paginator = Paginator(posts, 4)  # 4 posts per page
+
+    page_number = request.GET.get("page")
+    posts = paginator.get_page(page_number)
     return render(request, "blog/home.html", {"posts": posts})
 
 
