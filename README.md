@@ -2,7 +2,7 @@
 
 # 🧠 Nerdy Posts - A Django Blog App
 
-**Nerdy Posts** is a full-featured CRUD (Create, Read, Update, Delete) blog application built with **Django**, using **HTML**, **Bootstrap**, and **Jinja2-style templates**.
+It is a full-featured CRUD (Create, Read, Update, Delete) blog application built with **Django**, using **HTML**, **Bootstrap**, and **Jinja2-style templates**.
 ---
 
 ## 🚀 Features
