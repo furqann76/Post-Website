@@ -11,6 +11,9 @@
                 <a href="{% url 'post_detail' post.pk %}" class="text-primary text-decoration-none">
                     {{ post.title }}
                 </a>
+                {% if not post.is_approved %}
+                    <span class="badge bg-warning text-dark ms-2">Not Approved</span>
+                {% endif %}
             </h3>
             <p class="card-text">{{ post.content|truncatewords:30 }}</p>
             <p class="text-uppercase small mb-1">Posted on {{ post.created_at|date:"F d, Y, P" }}</p>

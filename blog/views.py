@@ -96,7 +96,7 @@ def profile(request):
 
 # Create your views here.
 def home(request):
-    posts = Post.objects.all().order_by("-created_at")
+    posts = Post.objects.filter(is_approved=True).order_by("-created_at")
     paginator = Paginator(posts, 4)  # 4 posts per page
 
     page_number = request.GET.get("page")
@@ -140,7 +140,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("home")
 
     def form_valid(self, form):
-        form.instance.user = self.request.user  # 👈 Set the user here!
+        form.instance.user = self.request.user
         return super().form_valid(form)
 
 

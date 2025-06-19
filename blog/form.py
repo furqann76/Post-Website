@@ -24,22 +24,6 @@ class UserRegisterForm(UserCreationForm):
             "password2",
         )
 
-
-class PostForm(forms.ModelForm):
-    class Meta:
-        model = Post
-        fields = ["title", "content"]
-
-    def clean_content(self):
-        content = self.cleaned_data.get("content", "").lower()
-        banned_words = ["stupid", "idiot", "fuck", "negativeword"]  # Add your list
-        for word in banned_words:
-            if word in content:
-                raise forms.ValidationError(
-                    "Your post contains inappropriate or negative language."
-                )
-        return content
-
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
@@ -77,3 +61,33 @@ class CommentForm(forms.ModelForm):
                 attrs={"rows": 3, "placeholder": "Write your comment..."}
             ),
         }
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ["title", "content"]
+
+    def clean_content(self):
+        content = self.cleaned_data.get("content", "").lower()
+        banned_words = [
+            "stupid",
+            "idiot",
+            "moron",
+            "dumb",
+            "hate",
+            "useless",
+            "shut up",
+            "loser",
+        ]
+        self.cleaned_data["has_banned_word"] = any(
+            word in content for word in banned_words
+        )
+        return content
+
+    def save(self, commit=True):
+        post = super().save(commit=False)
+        post.is_approved = not self.cleaned_data.get("has_banned_word")
+        if commit:
+            post.save()
+        return post
