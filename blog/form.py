@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from blog.models import Profile
 from .models import Comment
+from .models import Post
 
 
 class UserRegisterForm(UserCreationForm):
@@ -22,6 +23,22 @@ class UserRegisterForm(UserCreationForm):
             "password1",
             "password2",
         )
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ["title", "content"]
+
+    def clean_content(self):
+        content = self.cleaned_data.get("content", "").lower()
+        banned_words = ["stupid", "idiot", "fuck", "negativeword"]  # Add your list
+        for word in banned_words:
+            if word in content:
+                raise forms.ValidationError(
+                    "Your post contains inappropriate or negative language."
+                )
+        return content
 
     def save(self, commit=True):
         user = super().save(commit=False)

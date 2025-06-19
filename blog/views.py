@@ -16,6 +16,21 @@ from rest_framework import generics
 from .serializers import PostSerializer
 from .permissions import HasAPIKey
 from blog.throttles import APIKeyRateThrottle
+from .form import PostForm
+
+
+@login_required
+def post_create(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect("home")
+    else:
+        form = PostForm()
+    return render(request, "blog/post_form.html", {"form": form})
 
 
 class PostListAPIView(generics.ListAPIView):
@@ -119,8 +134,9 @@ def post_detail(request, pk):
 # Create Post
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
+    form_class = PostForm
     template_name = "blog/post_form.html"
-    fields = ["title", "content"]
+    """fields = ["title", "content"]"""
     success_url = reverse_lazy("home")
 
     def form_valid(self, form):
