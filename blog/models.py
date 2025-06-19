@@ -40,7 +40,12 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    is_approved = models.BooleanField(default=False)
+    APPROVAL_STATUS = (
+        (0, "Not Approved"),
+        (1, "Approved"),
+        (2, "Processed"),
+    )
+    is_approved = models.IntegerField(choices=APPROVAL_STATUS, default=0)
 
     def __str__(self):
         return self.title

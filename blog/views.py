@@ -96,7 +96,7 @@ def profile(request):
 
 # Create your views here.
 def home(request):
-    posts = Post.objects.filter(is_approved=True).order_by("-created_at")
+    posts = Post.objects.filter(is_approved=1).order_by("-created_at")
     paginator = Paginator(posts, 4)  # 4 posts per page
 
     page_number = request.GET.get("page")

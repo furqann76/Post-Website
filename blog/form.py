@@ -87,7 +87,8 @@ class PostForm(forms.ModelForm):
 
     def save(self, commit=True):
         post = super().save(commit=False)
-        post.is_approved = not self.cleaned_data.get("has_banned_word")
+        """post.is_approved = not self.cleaned_data.get("has_banned_word")"""
+        post.is_approved = 0
         if commit:
             post.save()
         return post
