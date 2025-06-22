@@ -19,6 +19,17 @@
         .nerdnook {
             color: black;
         }
+        #chatbot {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+        #chatbot.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body>
@@ -30,7 +41,6 @@
                     <a href="{% url 'profile' %}" class="btn btn-primary me-2">Profile</a>
                     <a href="{% url 'post-create' %}" class="btn btn-primary me-2">Create New Post</a>
                     <a href="{% url 'my_posts' %}" class="btn btn-primary me-2">My Posts</a>
-                    <!-- Logout as POST form -->
                     <form method="post" action="{% url 'logout' %}" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger">Logout</button>
@@ -46,6 +56,83 @@
         {% block content %}
         {% endblock %}
     </main>
+
+    <!-- Floating Chatbot Button and Window -->
+    <div id="chat-toggle" class="position-fixed bottom-0 end-0 m-4 rounded-circle bg-primary text-white d-flex justify-content-center align-items-center shadow"
+         style="width: 60px; height: 60px; z-index: 9999; cursor: pointer;">
+      💬
+    </div>
+
+    <div id="chatbot" class="position-fixed bottom-0 end-0 m-4 shadow-lg" style="width: 300px; z-index: 9998;">
+      <div class="card">
+        <div class="card-header bg-primary text-white py-2 px-3 d-flex justify-content-between align-items-center">
+          <strong>Ask a Question</strong>
+          <button id="close-chat" class="btn btn-sm btn-light">&times;</button>
+        </div>
+        <div class="card-body" style="height: 250px; overflow-y: auto;" id="chat-messages">
+          <div class="text-muted small">Chat started...</div>
+        </div>
+        <div class="card-footer p-2">
+          <form id="chat-form" class="d-flex">
+            <input type="text" id="user-question" class="form-control me-2" placeholder="Type your question" required>
+            <button class="btn btn-primary" type="submit">Ask</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const chatToggle = document.getElementById("chat-toggle");
+      const chatbot = document.getElementById("chatbot");
+      const closeChat = document.getElementById("close-chat");
+      const chatForm = document.getElementById("chat-form");
+      const userInput = document.getElementById("user-question");
+      const chatMessages = document.getElementById("chat-messages");
+
+      chatToggle.addEventListener("click", () => {
+        chatbot.classList.add("show");
+        chatToggle.classList.add("d-none");
+      });
+
+      closeChat.addEventListener("click", () => {
+        chatbot.classList.remove("show");
+        chatToggle.classList.remove("d-none");
+      });
+
+      chatForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const question = userInput.value.trim();
+        if (!question) return;
+
+        const userMessage = document.createElement("div");
+        userMessage.className = "text-end text-primary mb-2";
+        userMessage.textContent = "You: " + question;
+        chatMessages.appendChild(userMessage);
+        userInput.value = "";
+
+        try {
+          const response = await fetch("http://127.0.0.1:8001/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: question })
+          });
+
+          const data = await response.json();
+
+          const botMessage = document.createElement("div");
+          botMessage.className = "text-start text-dark mb-2";
+          botMessage.textContent = "Bot: " + data.answer;
+          chatMessages.appendChild(botMessage);
+
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        } catch (error) {
+          const errorMessage = document.createElement("div");
+          errorMessage.className = "text-danger small";
+          errorMessage.textContent = "Error: Could not fetch response.";
+          chatMessages.appendChild(errorMessage);
+        }
+      });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
