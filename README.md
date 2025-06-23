@@ -124,7 +124,7 @@ A full-featured blog platform built with **Django** and **Django REST Framework*
 
 5. **Run the FastAPI RAG server (for PDF QA):**
     ```sh
-    uvicorn blog.rag.rag:app --reload
+    uvicorn blog.rag:app --reload --port 8001
     ```
 
 ---
