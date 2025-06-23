@@ -1,83 +1,145 @@
----
+# 🧠 Nerdy Posts - Django Blog & RAG API Project
 
-# 🧠 Nerdy Posts - A Django Blog App
+A full-featured blog platform built with **Django** and **Django REST Framework**, featuring user authentication, profile management, CRUD for posts and comments, REST API with API key security, rate limiting, and a FastAPI-based Retrieval-Augmented Generation (RAG) PDF QA microservice.
 
-It is a full-featured CRUD (Create, Read, Update, Delete) blog application built with **Django**, using **HTML**, **Bootstrap**, and **Jinja2-style templates**.
 ---
 
 ## 🚀 Features
 
-* 📝 Add a new blog post
-* ✏️ Edit an existing post
-* ❌ Delete a post
-* 📋 View all posts on the homepage
-* 🔐 User authentication (signup, login, logout)
-* 👤 User profile with profile picture support
-* 🔄 Update user information and avatar
-* 🔑 Secure REST API endpoint for posts with API key authentication
-* ⚡ API throttling to limit excessive requests
-* 🔁 Conditional navigation based on user login status
-* 💅 Responsive frontend using Bootstrap
-* 🌐 Optional CORS support for cross-origin API access
+- 📝 Create, edit, and delete blog posts
+- 💬 Comment on posts (with text-to-speech for comments)
+- 🔐 User authentication (register, login, logout)
+- 👤 User profile with profile picture and editable info
+- 📋 View all posts, search posts, and filter by user
+- 🗝️ Secure REST API for posts with API key authentication and throttling
+- ⚡ API rate limiting for anonymous, user, and API key requests
+- 🌐 Responsive frontend using Bootstrap 4
+- 🔁 Conditional navigation based on authentication status
+- 📄 RAG PDF QA API using FastAPI (ask questions about PDFs)
+- 🖼️ Media uploads (profile pictures)
+- 🗃️ SQLite database (default)
 
 ---
 
 ## 🛠 Tech Stack
 
-* **Backend:** Django (Python)
-* **Frontend:** HTML, Bootstrap
-* **Templating Engine:** Jinja2-style Django templates
-* **Database:** SQLite (default)
-* **API:** Django REST Framework with API key security and rate limiting
+- **Backend:** Django 5, Django REST Framework, FastAPI
+- **Frontend:** HTML, Bootstrap 4, Django templates
+- **Database:** SQLite
+- **API:** REST (DRF), FastAPI (RAG)
+- **Other:** PyMuPDF, Sentence Transformers, FAISS, gTTS
 
 ---
 
-## 📁 Project Structure Highlights
+## 📁 Project Structure
 
-* `blog/forms.py` — Custom forms for user registration and profile editing
-* `blog/models.py` — Models for Post, Profile, and Comment
-* `blog/views.py` — Views for authentication, profile, posts, and API
-* `blog/serializers.py` — Serializer for Post model (API)
-* `blog/permissions.py` — Custom API key permission class
-* `blog/throttles.py` — Custom throttle class for API key rate limiting
-* `blog/templates/blog/` — HTML templates for login, signup, home, profile, etc.
-* `blog/urls.py` — URL patterns for all views and API endpoints
+📁 Django-Project/
+├── manage.py
+├── db.sqlite3
+├── requirements.txt
+├── .env
+├── README.md
+├── siddique\_family.pdf
+├── django.pdf
+│
+├── blog/
+│   ├── **init**.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── form.py
+│   ├── models.py
+│   ├── permissions.py
+│   ├── rag.py                  # FastAPI RAG PDF QA microservice
+│   ├── serializers.py
+│   ├── signals.py
+│   ├── tests.py
+│   ├── throttles.py
+│   ├── urls.py
+│   ├── views.py
+│   ├── migrations/
+│   ├── management/
+│   ├── templates/
+│   │   └── blog/
+│   │       ├── base.html
+│   │       ├── home.html
+│   │       ├── post\_detail.html
+│   │       └── ...
+│   └── media/
+│       └── profile\_pics/
+│
+├── myapp/
+│   ├── **init**.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── api/
+│
+└── media/
+└── profile\_pics/
+
 
 ---
 
-## 🔐 API Usage
+## 🔑 API Usage
 
-### 📦 API Endpoint
+- **Posts API:**  
+  Endpoint: `/api/posts/`  
+  - Requires API key in the header: `Authorization: Api-Key <your-key>`
+  - Throttled by user, anon, and API key (see `myapp/settings.py`)
+  - Serializer: [`PostSerializer`](blog/serializers.py)
+  - Permission: [`HasAPIKey`](blog/permissions.py)
+  - Throttle: [`APIKeyRateThrottle`](blog/throttles.py)
 
-`/api/posts/` — Returns all posts in JSON format.
-Secured using a custom API key passed in the `X-API-KEY` header.
-
-**Example:**
-
-```bash
-curl -H "X-API-KEY: your-secret-api-key" http://localhost:8000/api/posts/
-```
-
-### ⏱ API Throttling
-
-To prevent abuse, API access is rate-limited (e.g., 5 requests per minute per API key).
-
----
-
-## 🧪 How to Use
-
-1. Register a new user via the signup page.
-2. Log in to access your profile and create posts.
-3. Edit or delete your posts from the profile or home page.
-4. Access the REST API using a valid API key.
-5. Use the API to display posts on other websites.
+- **RAG PDF QA API:**  
+  - Run with:  
+    ```
+    uvicorn blog.rag.rag:app --reload
+    ```
+  - Ask questions about PDFs in the project root (`django.pdf`).
 
 ---
 
-## 👨‍💻 Conditional Navigation
+## 🧪 How to Run
 
-* If the user is **not authenticated**: Show **Login** and **Signup** buttons.
-* If the user is **authenticated**: Show **Profile**, **Create Post**, and **Logout** options.
+1. **Install dependencies:**
+    ```sh
+    pip install -r requirement.txt
+    ```
+
+2. **Apply migrations:**
+    ```sh
+    python [manage.py](http://_vscodecontentref_/19) migrate
+    ```
+
+3. **Create a superuser (optional):**
+    ```sh
+    python [manage.py](http://_vscodecontentref_/20) createsuperuser
+    ```
+
+4. **Run the Django server:**
+    ```sh
+    python [manage.py](http://_vscodecontentref_/21) runserver
+    ```
+
+5. **Run the FastAPI RAG server (for PDF QA):**
+    ```sh
+    uvicorn blog.rag.rag:app --reload
+    ```
+
+---
+
+## 👨‍💻 Main Django App Highlights
+
+- **Forms:** [`blog/form.py`](blog/form.py) — User registration, profile edit, post/comment forms
+- **Models:** [`blog/models.py`](blog/models.py) — `Post`, `Profile`, `Comment`
+- **Views:** [`blog/views.py`](blog/views.py) — CRUD, profile, API, TTS for comments
+- **Serializers:** [`blog/serializers.py`](blog/serializers.py) — DRF serializers
+- **Permissions:** [`blog/permissions.py`](blog/permissions.py) — API key permission
+- **Throttles:** [`blog/throttles.py`](blog/throttles.py) — Custom API key throttling
+- **Templates:** [`blog/templates/blog/`](blog/templates/blog/) — HTML templates
+- **URLs:** [`blog/urls.py`](blog/urls.py), [`myapp/urls.py`](myapp/urls.py)
+- **Settings:** [`myapp/settings.py`](myapp/settings.py) — All configuration
 
 ---
 
@@ -85,8 +147,30 @@ To prevent abuse, API access is rate-limited (e.g., 5 requests per minute per AP
 
 Accessible at `/profile/`, this page displays:
 
-* Username and email
-* Profile picture or default avatar
-* All posts created by the logged-in user
+- Username and email
+- Profile picture or default avatar
+- All posts created by the logged-in user
+
+---
+
+## 📄 RAG PDF QA API
+
+- **Location:** [`blog/rag.py`](blog/rag.py)
+- **Purpose:** Ask questions about the PDFs in the project root using LLMs and vector search.
+- **Run:**  
+
+- **Dependencies:** See `requirement.txt` for `fastapi`, `faiss-cpu`, `sentence-transformers`, `PyMuPDF`, etc.
+
+---
+
+## 📦 Requirements
+
+See [`requirement.txt`](requirement.txt) for all dependencies.
+
+---
+
+## 📝 License
+
+This project is for educational/demo purposes.
 
 ---
