@@ -94,7 +94,7 @@ A full-featured blog platform built with **Django** and **Django REST Framework*
 - **RAG PDF QA API:**  
   - Run with:  
     ```
-    uvicorn blog.rag.rag:app --reload
+    uvicorn blog.rag:app --reload --port 8001
     ```
   - Ask questions about PDFs in the project root (`django.pdf`).
 
