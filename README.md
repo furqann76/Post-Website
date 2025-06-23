@@ -109,17 +109,17 @@ A full-featured blog platform built with **Django** and **Django REST Framework*
 
 2. **Apply migrations:**
     ```sh
-    python [manage.py](http://_vscodecontentref_/19) migrate
+    python manage.py migrate
     ```
 
 3. **Create a superuser (optional):**
     ```sh
-    python [manage.py](http://_vscodecontentref_/20) createsuperuser
+    python manage.py createsuperuser
     ```
 
 4. **Run the Django server:**
     ```sh
-    python [manage.py](http://_vscodecontentref_/21) runserver
+    python manage.py runserver
     ```
 
 5. **Run the FastAPI RAG server (for PDF QA):**
