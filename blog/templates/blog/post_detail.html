@@ -1,51 +1,51 @@
 {% extends "blog/base.html" %}
 
 {% block content %}
-<div class="content-section">
-    <h1 class="text-white">{{ post.title }}</h1>
-    <p class="text-white">{{ post.content }}</p>
-    <hr>
-    <small class="text-white">{{ post.created_at }}</small>
 
-    <div class="btn-group">
-        <a href="{% url 'home' %}" class="btn btn-sm btn-outline-primary" style="margin-left: 1px;">Return Home</a>
-    </div>
-
-    <hr>
-    <h3 style="color:white;">Leave a Comment</h3>
-
-    {% if user.is_authenticated %}
-        <form method="post">
-            {% csrf_token %}
-            {{ comment_form.body }}
-            <div>
-            <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
-            </div>
-        </form>
-    {% else %}
-        <p style="color:white;">Please <a href="{% url 'login' %}">log in</a> to comment.</p>
-    {% endif %}
-
-    <hr>
-    <h4 style="color:white;">Comments:</h4>
-
-    {% for comment in comments %}
-        <div class="mb-2 p-2" style="background:#f0f0f0; border-radius:5px;">
-            <strong>{{ comment.user.username }}</strong><br>
-            <p>{{ comment.body }}</p>
-            <small>{{ comment.created_at }}</small>
-        </div>
-        {% if user.is_authenticated %}
-        <form method="post" action="{% url 'delete_comment' comment.id %}" style="display: inline;">
-            {% csrf_token %}
-
-            <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 3px;">
-                Delete
-            </button>
-        </form>
-        {% endif %}
-    {% empty %}
-        <p style="color:white;">No comments yet. Be the first to comment!</p>
-    {% endfor %}
+<div class="content-section"> <h1 class="text-white">{{ post.title }}</h1> <p class="text-white">{{ post.content }}</p> <hr> <small class="text-white">{{ post.created_at }}</small>
+<div class="btn-group">
+    <a href="{% url 'home' %}" class="btn btn-sm btn-outline-primary" style="margin-left: 1px;">Return Home</a>
 </div>
+
+<hr>
+<h3 style="color:white;">Leave a Comment</h3>
+
+{% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.body }}
+        <div>
+        <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
+        </div>
+    </form>
+{% else %}
+    <p style="color:white;">Please <a href="{% url 'login' %}">log in</a> to comment.</p>
+{% endif %}
+
+<hr>
+<h4 style="color:white;">Comments:</h4>
+
+{% for comment in comments %}
+    <div class="mb-2 p-2" style="background:#f0f0f0; border-radius:5px;">
+        <strong>{{ comment.user.username }}</strong><br>
+        <p>{{ comment.body }}</p>
+        <small>{{ comment.created_at }}</small>
+        <br>
+        <button onclick="playComment({{ comment.id }})" class="btn btn-sm btn-outline-secondary mt-1">🔊 Play</button>
+    </div>
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'delete_comment' comment.id %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 3px;">
+            Delete
+        </button>
+    </form>
+    {% endif %}
+{% empty %}
+    <p style="color:white;">No comments yet. Be the first to comment!</p>
+{% endfor %}
+</div>
+<audio id="tts-player" style="display: none;"></audio>
+
+<script> function playComment(commentId) { const audioPlayer = document.getElementById('tts-player'); audioPlayer.src = `/speak-comment/${commentId}/`; audioPlayer.play(); } </script>
 {% endblock %}

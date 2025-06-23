@@ -25,6 +25,7 @@ urlpatterns = [
     path(
         "comment/<int:comment_id>/delete/", views.delete_comment, name="delete_comment"
     ),
+    path('speak-comment/<int:comment_id>/', views.speak_comment, name='speak_comment'),
     path(
         "login/",
         auth_views.LoginView.as_view(template_name="blog/login.html"),

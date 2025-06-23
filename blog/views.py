@@ -17,6 +17,22 @@ from .serializers import PostSerializer
 from .permissions import HasAPIKey
 from blog.throttles import APIKeyRateThrottle
 from .form import PostForm
+from gtts import gTTS
+from django.http import FileResponse, Http404
+from .models import Comment 
+import io
+
+def speak_comment(request, comment_id):
+    try:
+        comment = Comment.objects.get(pk=comment_id)
+    except Comment.DoesNotExist:
+        raise Http404("Comment not found")
+
+    tts = gTTS(comment.body) 
+    mp3_fp = io.BytesIO()
+    tts.write_to_fp(mp3_fp)
+    mp3_fp.seek(0)
+    return FileResponse(mp3_fp, content_type="audio/mpeg")
 
 
 @login_required
